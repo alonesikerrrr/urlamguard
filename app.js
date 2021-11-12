@@ -2,11 +2,12 @@ const {
     Client
 } = require('discord.js');
 const client = new Client();
+const keepAlive = require("./server");
 const request = require('request');
 let Options = {
-    "Vanity_URL": "KORUNCAK URL",
-    "Log_Channel": "LOG KANAL ID",
-    "Bot_Token": "TOKEN"
+    "Vanity_URL": "sunucu url hangi ismi koydusan onu yaz",
+    "Log_Channel": "url guard log ıd",
+    "Bot_Token": "buraya gerek yok envden gizlicen"
 };
 
 client.on('guildUpdate', async (oldGuild, newGuild) => {
@@ -29,7 +30,7 @@ client.on('guildUpdate', async (oldGuild, newGuild) => {
         json: true,
         method: 'PATCH',
         headers: {
-            "Authorization": `Bot ${Options.Bot_Token}`
+            "Authorization": `Bot ${process.env.token}`
         }
     };
     request(settings, (err, res, body) => {
@@ -39,6 +40,18 @@ client.on('guildUpdate', async (oldGuild, newGuild) => {
     });
 });
 
-client.login(Options.Bot_Token)
+client.login(process.env.token)
+
+client.on("ready", () => {
+  client.channels.cache.get("botun girceği ses kanalı ıd gir buraya").join();
+ })
+
+client.on ( "ready" , () => {
+    console.log ( "Başarıyla", client.user.username + "İsmi İle Giriş Yapıldı!" );
+    console.log("Alone")
+} );
+ client.on("ready", async () => {
+client.user.setPresence({ activity: { name: "Alone" }, status: "dnd" });
+})
 
 
